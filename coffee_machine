@@ -1,0 +1,102 @@
+# 주요 문제
+# class로 oop를 구현하는 코드로 바꿀 것
+
+class CoffeeMachine:
+    # 기본적인 재료 셋팅
+    def __init__(self, water, milk, beans, cups, money):
+        self.water = water
+        self.milk = milk
+        self.beans = beans
+        self.cups = cups
+        self.money = money
+        self.action = input("Write action (buy, fill, take, remaining, exit):")
+    
+    # 커피를 사는 경우
+    def buy(self, choice):
+        if choice == '1':
+            later_water = self.water - 250
+            later_milk = self.milk - 0
+            later_beans = self.beans - 16
+            later_money = self.money + 4
+            later_cups = self.cups - 1
+        elif choice == '2':
+            later_water = self.water - 350
+            later_milk = self.milk - 75
+            later_beans = self.beans - 20
+            later_money = self.money + 7
+            later_cups = self.cups - 1
+        elif choice == '3':
+            later_water = self.water - 200
+            later_milk = self.milk - 100
+            later_beans = self.beans - 12
+            later_money = self.money + 6
+            later_cups = self.cups - 1 
+            
+        # 재료가 모자랄 경우를 계산하기 위해 임시로 저장해두는 dict
+        tem_dic = {later_water : 'water', 
+                   later_milk : 'milk', 
+                   later_beans : 'coffee beans', 
+                   later_cups : 'disposable cups'
+                  }
+        # 재고 확인
+        for item in tem_dic.keys():
+            if item < 0:
+                print("Sorry, not enough " + tem_dic[item] + "!")
+                break
+        else:
+            print("I have enough resources, making you a coffee!")
+            self.water = later_water
+            self.milk = later_milk
+            self.beans = later_beans
+            self.cups = later_cups
+            self.money = later_money     
+        self.action = input("Write action (buy, fill, take, remaining, exit):")
+        
+    # 남아 있는다는 선택지일 때
+    def remaining(self):
+        print("The coffee machine has:")
+        print(f"{self.water} of water")
+        print(f"{self.milk} of milk")
+        print(f"{self.beans} of coffee beans")
+        print(f"{self.cups} of disposable cups")
+        print(f"${self.money} of money")
+        self.action = input("Write action (buy, fill, take, remaining, exit):")
+        
+    # 재료를 채우는 선택지일 때
+    def fill(self, water, milk, beans, cups):
+        self.water += water
+        self.milk += milk
+        self.beans += beans
+        self.cups += cups
+        self.action = input("Write action (buy, fill, take, remaining, exit):")
+             
+    # 돈을 꺼내는 선택지일 때         
+    def take(self):
+        print(f"I gave you ${self.money}")
+        self.money = 0
+        self.action = input("Write action (buy, fill, take, remaining, exit):")
+        
+
+# 실행 코드        
+
+# 기본 셋팅
+my_caffe = CoffeeMachine(400, 540, 120, 9, 550)     
+  
+    
+while my_caffe.action != 'exit':
+    if my_caffe.action == 'buy':
+        choice = input("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino, back - to main menu:")
+        my_caffe.buy(choice)
+
+    elif my_caffe.action == 'fill':
+        water = int(input("Write how many ml of water do you want to add:"))
+        milk = int(input("Write how many ml of milk do you want to add:"))
+        beans = int(input("Write how many grams of coffee beans do you want to add:"))
+        cups = int(input("Write how many disposable cups of coffee do you want to add:"))
+        my_caffe.fill(water, milk, beans, cups)
+
+    elif my_caffe.action == 'remaining':
+        my_caffe.remaining()
+
+    elif my_caffe.action == 'take':
+        my_caffe.take()
